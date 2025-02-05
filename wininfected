@@ -2,9 +2,9 @@
 
 show_help() {
   echo "WinInfected v1.2"
-  echo "Usage: $0 [LHOST] [LPORT] [--obfuscate]"
+  echo "Usage: sudo $0 [LHOST] [LPORT] [--obfuscate]"
   echo
-  echo "Example: $0 192.168.1.1 4444 --obfuscate"
+  echo "Example: sudo $0 192.168.1.1 4444 --obfuscate"
   echo "Options:"
   echo "  --dependencies   Check and install missing dependencies."
   echo "  --update         Update script and dependencies."
