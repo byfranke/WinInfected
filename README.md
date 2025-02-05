@@ -40,7 +40,7 @@ chmod +x installer.sh
 ```
 
 ```bash
-sudo bash installer.sh
+sudo ./installer.sh
 ```
 
 Install Dependencies (if needed):
