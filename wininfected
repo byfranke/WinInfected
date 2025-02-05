@@ -33,7 +33,7 @@ check_and_install_dependencies() {
 
 update_script_and_dependencies() {
   echo "Updating Metasploit Framework..."
-  sudo apt update && sudo apt install metasploit-framework -y
+  apt update && sudo apt install metasploit-framework -y
   echo "Script and dependencies updated successfully."
 }
 
