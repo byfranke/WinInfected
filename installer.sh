@@ -15,9 +15,9 @@ fi
 if sudo cp wininfected /usr/bin/; then
   echo "WinInfected installed successfully."
   echo
-  echo "Usage: wininfected [LHOST] [LPORT] [--obfuscate]"
+  echo "Usage: sudo wininfected [LHOST] [LPORT] [--obfuscate]"
   echo
-  echo "Example: wininfected 192.168.1.1 4444 --obfuscate"
+  echo "Example: sudo wininfected 192.168.1.1 4444 --obfuscate"
   echo "Options:"
   echo "  --dependencies   Check and install missing dependencies."
   echo "  --update         Update script and dependencies."
