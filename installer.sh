@@ -14,6 +14,18 @@ fi
 
 if sudo cp wininfected /usr/bin/; then
   echo "WinInfected installed successfully."
+  echo
+  echo "Usage: wininfected [LHOST] [LPORT] [--obfuscate]"
+  echo
+  echo "Example: wininfected 192.168.1.1 4444 --obfuscate"
+  echo "Options:"
+  echo "  --dependencies   Check and install missing dependencies."
+  echo "  --update         Update script and dependencies."
+  echo "  --obfuscate      Enable payload obfuscation using x86/shikata_ga_nai encoder."
+  echo "  -h, --help       Display this help message."
+  echo
+  echo "More information: https://github.com/byfranke/WinInfected"
+  echo
 else
   echo "Error: Failed to copy WinInfected to /usr/bin."
   exit 1
