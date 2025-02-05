@@ -5,7 +5,7 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-if [ -f "WinInfected" ]; then
+if [ -f "wininfected" ]; then
   sudo chmod +x wininfected
 else
   echo "Error: WinInfected file not found."
