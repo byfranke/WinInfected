@@ -29,7 +29,7 @@ Options:
 ## Steps to Run:
 
 ```bash
-git clone https://github.com/byfranke/WinInfected.git
+git clone https://github.com/byfranke/wininfected.git
 ```
 
 ```bash
