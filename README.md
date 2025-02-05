@@ -33,7 +33,7 @@ git clone https://github.com/byfranke/wininfected.git
 ```
 
 ```bash
-cd WinInfected
+cd wininfected
 ```
 ```bash
 chmod +x installer.sh
