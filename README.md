@@ -36,11 +36,11 @@ git clone https://github.com/byfranke/wininfected.git
 cd wininfected
 ```
 ```bash
-chmod +x installer.sh
+chmod +x setup.sh
 ```
 
 ```bash
-sudo ./installer.sh
+sudo ./setup.sh
 ```
 
 Install Dependencies (if needed):
@@ -68,11 +68,19 @@ Do you want to start msfconsole to listen for connections? (y/n):
 Enter `y` to launch `msfconsole` with a pre-configured multi/handler, or `n` to exit.
 
 ## Dependencies
+
 - Metasploit Framework: Provides both `msfvenom` and `msfconsole`.
+
 Installation (on Debian-based systems):
 
 ```bash
 sudo apt update && sudo apt install metasploit-framework -y
+```
+
+Installation (on Arch-based systems):
+
+```bash
+sudo sudo pacman -Syu && sudo sudo pacman -S metasploit
 ```
 
 **Notes**
